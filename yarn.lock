@@ -3978,6 +3978,11 @@ relateurl@^0.2.7:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha512-G08Dxvm4iDN3MLM0EsP62EDV9IuhXPR6blNz6Utcp7zyV3tr4HVNINt6MpaRWbxoOHT3Q7YN2P+jaHX8vUbgog==
 
+remeda@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-1.2.0.tgz#e8cb487bd37b36ee9ab478f89ad531c589159ea5"
+  integrity sha512-XRechb9xoJqWok7MBwqhGlFC4PnyTlLU5CWlE3fCiaEGvLa6J73IGkklr1uGd+GBPr/DOPbaLKfJeJgILWUnyA==
+
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"

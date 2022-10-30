@@ -2,12 +2,30 @@ import { MjmlButton } from "mjml-react";
 import { black, gold, grayLight } from "./theme";
 import { leadingTight, textBase, borderBase } from "./theme";
 
+export type ButtonOptions = {
+  accent?: string;
+  color?: string;
+  accentDark?: string;
+  colorDark?: string;
+};
+
 type ButtonPrimaryProps = {
   link: string;
   uiText: string;
+  options?: ButtonOptions;
 };
 
-const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ link, uiText }) => {
+const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
+  link,
+  uiText,
+  options = {},
+}) => {
+  const {
+    accent = black,
+    color = grayLight,
+    accentDark = gold,
+    colorDark = black,
+  } = options;
   return (
     <>
       <MjmlButton
@@ -17,8 +35,8 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ link, uiText }) => {
         padding="0"
         align="left"
         href={link}
-        backgroundColor={black}
-        color={grayLight}
+        backgroundColor={accent}
+        color={color}
         borderRadius={borderBase}
         cssClass="light-mode"
       >
@@ -31,8 +49,8 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ link, uiText }) => {
         padding="0"
         align="left"
         href={link}
-        backgroundColor={gold}
-        color={black}
+        backgroundColor={accentDark}
+        color={colorDark}
         borderRadius={borderBase}
         cssClass="dark-mode"
       >

@@ -1,10 +1,11 @@
 import { MjmlSection, MjmlColumn, MjmlImage } from "mjml-react";
 
 type HeaderProps = {
+  logo: string;
   loose?: boolean;
 };
 
-const Header: React.FC<HeaderProps> = ({ loose }) => {
+const Header: React.FC<HeaderProps> = ({ loose, logo }) => {
   return (
     <MjmlSection padding={loose ? "48px 0 40px" : "48px 0 24px"}>
       <MjmlColumn>
@@ -13,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ loose }) => {
           width="49px"
           height="54px"
           align="center"
-          src="https://s3.amazonaws.com/lab.campsh.com/bb-transparent%402x.png"
+          src={logo}
           cssClass="logo"
         />
       </MjmlColumn>
