@@ -3,12 +3,12 @@ import { buildSendMail } from "mailing-core";
 
 const transport = nodemailer.createTransport({
   pool: true,
-  host: "smtp.example.com",
-  port: 465,
-  secure: true, // use TLS
+  host: process.env.MAILER_HOST,
+  port: parseInt(process.env.MAILER_PORT),
+  secure: process.env.MAILER_SECURE == "true", // use TLS
   auth: {
-    user: "username",
-    pass: "password",
+    user: process.env.MAILER_USERNAME,
+    pass: process.env.MAILER_PASSWORD,
   },
 });
 
