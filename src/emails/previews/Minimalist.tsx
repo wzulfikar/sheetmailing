@@ -7,7 +7,7 @@ const sampleProps = {
   intro: "Hello, John!",
   coverImage: "https://s3.amazonaws.com/lab.campsh.com/bb-hero%402x.jpg",
   content:
-    "Hello Amelita,\nWe’ve received your request to change your password. Use the link below to set up a new password for your account. This link is only usable once! If you need to, you can reinitiate the password process again here.",
+    "Hello John,\nWe’ve received your request to change your password. Use the link below to set up a new password for your account. This link is only usable once! If you need to, you can reinitiate the password process again here.",
   ctaLabel: "Book a Reservation",
   ctaUrl: "https://example.com",
   footer: "© {year} BookBook  ·  Unsubscribe",
@@ -79,4 +79,27 @@ export function sample6_withFooter() {
 
 export function sample7_withCustomCTA() {
   return <Minimalist {...sampleProps} />;
+}
+
+export function sample8_withMarkdown() {
+  const intro = "Hello, **John!**";
+  const content =
+    "Hello John,  \nWe’ve received your request to change your password. Use the link below to set up a new password for your account. This link is only usable once! If you need to, you can reinitiate the password process again here.";
+  return <Minimalist {...sampleProps} intro={intro} content={content} />;
+}
+
+export function sample9_withPlaceholders() {
+  const intro = "{subject}";
+  const content =
+    "Hello {recipient_name}, you have requested a password reset.";
+  return (
+    <Minimalist
+      {...sampleProps}
+      intro={intro}
+      content={content}
+      options={{
+        placeholders: { subject: "Password reset", recipient_name: "John" },
+      }}
+    />
+  );
 }
