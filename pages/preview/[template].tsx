@@ -1,5 +1,4 @@
 import React from "react";
-import upperFirst from "lodash/upperFirst";
 import { renderTemplate } from "src/emails";
 
 export default function PreviewMinimalist({ template }) {
@@ -9,7 +8,7 @@ export default function PreviewMinimalist({ template }) {
 export async function getServerSideProps({ query }) {
   try {
     const { template, ...props } = query;
-    const html = await renderTemplate(upperFirst(template), props);
+    const html = await renderTemplate(template, props);
     return {
       props: { template: html },
     };

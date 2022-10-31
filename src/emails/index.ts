@@ -1,5 +1,6 @@
 import React from "react";
 import { buildSendMail, render } from "mailing-core";
+import upperFirst from "lodash/upperFirst";
 import nodemailer from "nodemailer";
 
 const transport = nodemailer.createTransport({
@@ -20,7 +21,7 @@ const sendMail = buildSendMail({
 });
 
 export const getTemplateComponent = async (template: string) => {
-  const component = await import(`./${template}`).then(
+  const component = await import(`./${upperFirst(template)}`).then(
     (mod) => mod.default
   )
   return component
@@ -33,6 +34,7 @@ export const renderTemplate = async (template: string, props: object) => {
 }
 
 type Options = {
+  subject: string;
   template: string,
   templateProps: object
 }
@@ -43,6 +45,7 @@ export const mailTo = async (recipient: string, options: Options) => {
     ...sendMailArgs,
     to: recipient,
     component: component(templateProps),
+    dangerouslyForceDeliver: true,
   })
 }
 
