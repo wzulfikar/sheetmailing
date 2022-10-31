@@ -1,4 +1,5 @@
 import { pick, omit } from "remeda";
+
 import Minimalist from "../Minimalist";
 
 const sampleProps = {
@@ -20,10 +21,6 @@ const sampleProps = {
     },
   },
 };
-
-export function custom_preview() {
-  return <Minimalist {...pick(sampleProps, ["content"])} />;
-}
 
 export function sample1_plain() {
   return <Minimalist {...pick(sampleProps, ["content"])} />;
