@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 
+import { parseSmtpInfo } from "src/mailing/util/parseSmtpInfo";
+
 type PreviewSenderProps = {
   html?: string;
   previewFunction?: string;
   previewClass?: string;
 };
+
+const smtpFormat = "user:password@ethereal.mail:587";
 
 const PreviewSender: React.FC<PreviewSenderProps> = ({
   html,
@@ -12,6 +16,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
   previewClass,
 }) => {
   const [email, setEmail] = useState<string | null>(null);
+  const [smtpInfo, setSmtpInfo] = useState<string | null>(null);
   const [error, setError] = useState<React.ReactElement | null>(null);
   const [lastSendAt, setLastSentAt] = useState<Date | null>(null);
   const [sending, setSending] = useState<boolean>(false);
@@ -24,15 +29,30 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
         setLastSentAt(new Date(lastSent));
       }
     }
-  }, [email]);
+    if (!smtpInfo) setSmtpInfo(window.localStorage.getItem("smtpInfo"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const send: React.FormEventHandler<HTMLFormElement> = useCallback(
     async (e) => {
       e.preventDefault();
 
-      if (!email) return;
+      if (!smtpInfo || !email) {
+        alert("Both SMTP info and email are required");
+        return;
+      }
 
+      const { error, smtp } = parseSmtpInfo(smtpInfo);
+      if (error) {
+        alert(
+          "SMTP info is invalid. Valid example:\nuser:password@ethereal.com:587"
+        );
+        return;
+      }
+
+      window.localStorage.setItem("smtpInfo", smtpInfo);
       window.localStorage.setItem("previewSenderEmail", email);
+
       try {
         setSending(true);
         const payload: SendPreviewRequestBody = {
@@ -41,6 +61,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
           previewFunction,
           previewClass,
           subject: `${previewClass} - ${previewFunction}`,
+          smtpInfo: smtp,
         };
         const response = await fetch("/api/previews/send", {
           method: "POST",
@@ -69,7 +90,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
         setSending(false);
       }
     },
-    [html, previewClass, previewFunction, email]
+    [html, previewClass, previewFunction, email, smtpInfo]
   );
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -79,19 +100,40 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
     []
   );
 
+  const onSmtpChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      setSmtpInfo(e.target.value);
+    },
+    []
+  );
+
   return (
     <div className="container">
       <h3>Send a test email</h3>
       {!lastSendAt && (
         <div className="subtitle">
-          To start sending emails, you must configure a transport in{" "}
-          <span className="mono">emails/index.tsx</span>.{" "}
-          <a href="https://github.com/sofn-xyz/mailing#configure-transport">
+          To start sending emails, configure SMTP transport with the following
+          format: <div className="mono block pt-1.5">{smtpFormat}</div>{" "}
+          {/* <a href="https://github.com/sofn-xyz/mailing#configure-transport">
             Learn more
-          </a>
+          </a> */}
         </div>
       )}
       <form onSubmit={send}>
+        <div>
+          <div>
+            <small>SMTP info:</small>
+          </div>
+          <input
+            className="w-[270px] mb-2"
+            placeholder={smtpFormat}
+            value={smtpInfo || ""}
+            onChange={onSmtpChange}
+          />
+        </div>
+        <div>
+          <small>Recipient:</small>
+        </div>
         <input
           aria-label="email"
           type="email"
@@ -189,7 +231,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
         .subtitle {
           font-size: 12px;
           margin-top: -4px;
-          margin-bottom: 16px;
+          margin-bottom: 5px;
           line-height: 130%;
           max-width: 288px;
         }

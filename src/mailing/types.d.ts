@@ -27,6 +27,12 @@ type SendPreviewRequestBody = {
   previewFunction?: string;
   previewClass?: string;
   subject: string;
+  smtpInfo: {
+    user: string;
+    password: string;
+    host: string;
+    port: number;
+  }
 };
 
 type SendPreviewResponseBody = {
