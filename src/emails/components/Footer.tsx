@@ -1,8 +1,7 @@
 import { MjmlSection, MjmlColumn, MjmlText } from "mjml-react";
 import { grayDark, textSm } from "./theme";
 
-export default function Footer({ text }: { text: string }) {
-  const year = new Date().getFullYear();
+export default function Footer({ text }: { text: string | JSX.Element }) {
   return (
     <MjmlSection cssClass="smooth">
       <MjmlColumn>
@@ -12,7 +11,7 @@ export default function Footer({ text }: { text: string }) {
           fontSize={textSm}
           color={grayDark}
         >
-          {text.replace(/{year}/g, year.toString())}
+          {text}
         </MjmlText>
       </MjmlColumn>
     </MjmlSection>

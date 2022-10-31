@@ -1,18 +1,13 @@
 import { MjmlButton } from "mjml-react";
+
+import { CtaOptions } from "../types";
 import { black, gold, grayLight } from "./theme";
 import { leadingTight, textBase, borderBase } from "./theme";
-
-export type ButtonOptions = {
-  accent?: string;
-  color?: string;
-  accentDark?: string;
-  colorDark?: string;
-};
 
 type ButtonPrimaryProps = {
   link: string;
   uiText: string;
-  options?: ButtonOptions;
+  options?: CtaOptions;
 };
 
 const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({

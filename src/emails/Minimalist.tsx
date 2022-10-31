@@ -10,28 +10,16 @@ import {
   MjmlImage,
   MjmlSpacer,
 } from "mjml-react";
-import ButtonPrimary, { ButtonOptions } from "./components/ButtonPrimary";
+import { MjmlHtml } from "mjml-react/extensions";
+import ButtonPrimary from "./components/ButtonPrimary";
 import {
   leadingTight,
   leadingRelaxed,
   textBase,
   textXl,
 } from "./components/theme";
+import { EmailPayload } from "./types";
 
-type Payload = {
-  content: string;
-
-  logo?: string;
-  coverImage?: string;
-  intro?: string;
-  ctaLabel?: string;
-  ctaUrl?: string;
-  signature?: string;
-  footer?: string;
-  options?: {
-    cta?: ButtonOptions;
-  };
-};
 const Minimalist = ({
   content,
   logo,
@@ -42,7 +30,10 @@ const Minimalist = ({
   signature,
   footer,
   options,
-}: Payload) => {
+}: EmailPayload) => {
+  const { subject, recipient, recipient_name } = options?.placeholders || {};
+  const renderText = createTextRenderer(options?.placeholders);
+
   return (
     <Mjml>
       <Head />
@@ -69,7 +60,7 @@ const Minimalist = ({
                 fontSize={textXl}
                 lineHeight={leadingTight}
               >
-                {intro}
+                {renderText(intro)}
               </MjmlText>
             )}
             <MjmlText
@@ -78,7 +69,7 @@ const Minimalist = ({
               lineHeight={leadingRelaxed}
               cssClass="paragraph"
             >
-              {content}
+              {renderText(content)}
             </MjmlText>
             <MjmlSpacer height="24px" />
             {ctaLabel && ctaUrl && (
@@ -97,15 +88,27 @@ const Minimalist = ({
                   lineHeight={leadingRelaxed}
                   cssClass="paragraph"
                 >
-                  {signature}
+                  {renderText(signature)}
                 </MjmlText>
               </>
             )}
           </MjmlColumn>
         </MjmlSection>
-        {footer && <Footer text={footer} />}
+        {footer && <Footer text={renderText(footer)} />}
       </MjmlBody>
     </Mjml>
+  );
+};
+
+// eslint-disable-next-line react/display-name
+const createTextRenderer = (placeholders) => (text: string) => {
+  const year = new Date().getFullYear();
+  return (
+    <MjmlHtml
+      html={text
+        .replaceAll("{year}", year.toString())
+        .replaceAll("\n", "<br/>")}
+    />
   );
 };
 
