@@ -10,7 +10,6 @@ import {
   MjmlImage,
   MjmlSpacer,
 } from "mjml-react";
-import { MjmlHtml } from "mjml-react/extensions";
 import ButtonPrimary from "./components/ButtonPrimary";
 import {
   leadingTight,
@@ -19,6 +18,7 @@ import {
   textXl,
 } from "./components/theme";
 import { EmailPayload } from "./types";
+import { createTextRenderer } from "./lib/createTextRenderer";
 
 const Minimalist = ({
   content,
@@ -31,7 +31,6 @@ const Minimalist = ({
   footer,
   options,
 }: EmailPayload) => {
-  const { subject, recipient, recipient_name } = options?.placeholders || {};
   const renderText = createTextRenderer(options?.placeholders);
 
   return (
@@ -97,18 +96,6 @@ const Minimalist = ({
         {footer && <Footer text={renderText(footer)} />}
       </MjmlBody>
     </Mjml>
-  );
-};
-
-// eslint-disable-next-line react/display-name
-const createTextRenderer = (placeholders) => (text: string) => {
-  const year = new Date().getFullYear();
-  return (
-    <MjmlHtml
-      html={text
-        .replaceAll("{year}", year.toString())
-        .replaceAll("\n", "<br/>")}
-    />
   );
 };
 
