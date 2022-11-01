@@ -15,6 +15,7 @@ export type EmailPayload = {
   ctaUrl?: string;
   signature?: string;
   footer?: string;
+  divider?: boolean;
   options?: {
     cta?: CtaOptions;
     placeholders?: {

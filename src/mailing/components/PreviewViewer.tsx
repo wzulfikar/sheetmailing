@@ -9,6 +9,7 @@ import { hotkeysMap } from "./hooks/usePreviewHotkeys";
 import IndexPane from "./IndexPane/IndexPane";
 import usePreviewPath from "./hooks/usePreviewPath";
 import { HamburgerContext } from "./HamburgerContext";
+import CircleLoader from "./CircleLoader";
 
 import MobileHeader from "./MobileHeader";
 import HTMLLint from "./HtmlLint";
@@ -30,6 +31,8 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const { previewFunction, previewClass } = usePreviewPath();
   const [viewMode, setViewMode] = useState<ViewMode>("desktop");
   const { hamburgerOpen } = useContext(HamburgerContext);
+  const [fetching, setFetching] = useState(false);
+  const [previewText, setPreviewText] = useState(null);
 
   const [customPreview, setCustomPreview] = useState<Data["preview"] | null>(
     null
@@ -38,13 +41,25 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const data = initialData;
   const { preview: initialPreview, previews } = data;
 
+  if (previewText) {
+    data.previewText = previewText;
+  }
+
   const preview = customPreview || initialPreview;
+
+  useEffect(() => {
+    fetch("/api/previews/previewText" + window.location.search)
+      .then((res) => res.json())
+      .then(({ previewText }) => setPreviewText(previewText));
+  }, []);
 
   useEffect(() => {
     if (!path?.[0] || !window.location.search) return;
 
     const isCustomPreview = path?.[1] == "custom_preview";
     const extendPreview = _extend;
+
+    setFetching(true);
 
     const params =
       isCustomPreview || extendPreview ? window.location.search : "";
@@ -54,11 +69,19 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
         if (json.success) {
           setCustomPreview(json.preview);
         }
+      })
+      .finally(() => {
+        setFetching(false);
       });
+
+    return () => {
+      setFetching(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
   return (
-    <div className="h-screen">
+    <div className="bg-black h-screen">
       <div
         className={cx(
           "left-pane absolute border-dotted border-r border-gray-600 w-full sm:w-[300px] sm:left-0 transition-all z-40 bg-black mt-[52px] sm:mt-0",
@@ -152,6 +175,11 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
         ) : (
           <div className="text-2xl grid h-screen place-items-center text-gray-600">
             No preview selected
+          </div>
+        )}
+        {fetching && (
+          <div className="loader-position">
+            <CircleLoader />
           </div>
         )}
       </div>

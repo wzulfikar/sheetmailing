@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import type { TreeRoute } from "./hooks/usePreviewTree";
 import { HamburgerContext } from "../HamburgerContext";
@@ -19,6 +19,14 @@ const CompactView: React.FC<CompactViewProps> = ({
 }) => {
   const { setHamburgerOpen } = useContext(HamburgerContext);
 
+  useEffect(() => {
+    // Collapse "Examples" section if selected item is not in "Examples"
+    if (!window.location.pathname.startsWith("/previews/Examples")) {
+      setCollapse(1, true); // 0 = "Emails", 1 = "Examples", 2 = "Minimalist"
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleClick = useCallback(
     (i: number, collapsed: boolean) =>
       (_e: React.MouseEvent<HTMLDivElement>) => {
@@ -34,7 +42,7 @@ const CompactView: React.FC<CompactViewProps> = ({
   let collapseLevel = 999;
   return (
     <div
-      className="py-4 px-3 font-bold text-sm outline-none"
+      className="py-4 px-3 font-bold text-sm outline-none text-white"
       tabIndex={1}
       role="tree"
     >

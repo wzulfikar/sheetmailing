@@ -17,6 +17,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
 }) => {
   const [email, setEmail] = useState<string | null>(null);
   const [smtpInfo, setSmtpInfo] = useState<string | null>(null);
+  const [subject, setSubject] = useState<string | null>(null);
   const [error, setError] = useState<React.ReactElement | null>(null);
   const [lastSendAt, setLastSentAt] = useState<Date | null>(null);
   const [sending, setSending] = useState<boolean>(false);
@@ -60,14 +61,17 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
           html,
           previewFunction,
           previewClass,
-          subject: `${previewClass} - ${previewFunction}`,
+          subject: subject || `${previewClass} - ${previewFunction}`,
           smtpInfo: smtp,
         };
-        const response = await fetch("/api/previews/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+        const response = await fetch(
+          "/api/previews/send" + window.location.search,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
         const data: SendPreviewResponseBody = await response.json();
 
         if (data.error || response.status >= 300) {
@@ -90,7 +94,7 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
         setSending(false);
       }
     },
-    [html, previewClass, previewFunction, email, smtpInfo]
+    [html, previewClass, previewFunction, email, smtpInfo, subject]
   );
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -106,6 +110,11 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
     },
     []
   );
+
+  const onSubjectChange: React.ChangeEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setSubject(e.target.value);
+    }, []);
 
   return (
     <div className="container">
@@ -129,6 +138,14 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
             placeholder={smtpFormat}
             value={smtpInfo || ""}
             onChange={onSmtpChange}
+          />
+          <div>
+            <small>Subject (optional):</small>
+          </div>
+          <input
+            className="w-[270px] mb-2"
+            value={subject || ""}
+            onChange={onSubjectChange}
           />
         </div>
         <div>

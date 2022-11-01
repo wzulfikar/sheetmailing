@@ -1,5 +1,4 @@
-import React from "react";
-import { buildSendMail, render } from "mailing-core";
+import { buildSendMail } from "mailing-core";
 import upperFirst from "lodash/upperFirst";
 import nodemailer from "nodemailer";
 
@@ -14,9 +13,15 @@ const transport = nodemailer.createTransport({
   },
 });
 
+export const sendMailWithTransport = (transport) => buildSendMail({
+  transport,
+  defaultFrom: "test@sheetmailing.com",
+  configPath: "./mailing.config.json",
+});
+
 const sendMail = buildSendMail({
   transport,
-  defaultFrom: "replace@me.with.your.com",
+  defaultFrom: "test@sheetmailing.com",
   configPath: "./mailing.config.json",
 });
 

@@ -64,7 +64,7 @@ const IndexPane: React.FC<IndexPaneProps> = ({ previews, previewText }) => {
           height="20"
           alt="mailing logo"
         />
-        <label className="toggle float-right text-sm cursor-pointer">
+        <label className="toggle float-right text-sm cursor-pointer text-white">
           Compact view
           <div
             id="toggle-compact-view"

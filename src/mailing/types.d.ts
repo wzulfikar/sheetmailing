@@ -36,6 +36,7 @@ type SendPreviewRequestBody = {
 };
 
 type SendPreviewResponseBody = {
+  success: boolean;
   error?: string;
 };
 
