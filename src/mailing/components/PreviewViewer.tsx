@@ -25,7 +25,7 @@ export type PreviewViewerProps = {
 
 const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const { query } = useRouter();
-  const { path } = query;
+  const { path, _extend } = query;
 
   const { previewFunction, previewClass } = usePreviewPath();
   const [viewMode, setViewMode] = useState<ViewMode>("desktop");
@@ -44,7 +44,10 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
     if (!path?.[0] || !window.location.search) return;
 
     const isCustomPreview = path?.[1] == "custom_preview";
-    const params = isCustomPreview ? window.location.search : "";
+    const extendPreview = _extend;
+
+    const params =
+      isCustomPreview || extendPreview ? window.location.search : "";
     fetch(`/api${window.location.pathname}${params}`)
       .then((res) => res.json())
       .then((json) => {
