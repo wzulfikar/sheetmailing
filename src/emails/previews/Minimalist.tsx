@@ -2,7 +2,7 @@ import { pick, omit } from "remeda";
 
 import Minimalist from "../Minimalist";
 
-const sampleProps = {
+const exampleProps = {
   logo: "https://s3.amazonaws.com/lab.campsh.com/bb-transparent%402x.png",
   intro: "Hello, John!",
   coverImage: "https://s3.amazonaws.com/lab.campsh.com/bb-hero%402x.jpg",
@@ -22,84 +22,80 @@ const sampleProps = {
   },
 };
 
-export function sample1_plain() {
-  return <Minimalist {...pick(sampleProps, ["content"])} />;
+const preview = (props, customProps = {}) => (
+  <Minimalist {...props} {...customProps} />
+);
+
+export function custom_preview(customProps) {
+  return preview(pick(exampleProps, ["content"]), customProps);
 }
 
-export function sample2_withLogo() {
-  return <Minimalist {...pick(sampleProps, ["content", "logo"])} />;
+export function example1_plain() {
+  return preview(pick(exampleProps, ["content"]));
 }
 
-export function sample3_withIntro() {
-  return <Minimalist {...pick(sampleProps, ["content", "logo", "intro"])} />;
+export function example2_withLogo() {
+  return preview(pick(exampleProps, ["content", "logo"]));
 }
 
-export function sample4_withCTA() {
-  return (
-    <Minimalist
-      {...pick(sampleProps, ["content", "logo", "intro", "ctaLabel", "ctaUrl"])}
-    />
+export function example3_withIntro() {
+  return preview(pick(exampleProps, ["content", "logo", "intro"]));
+}
+
+export function example4_withCTA() {
+  return preview(
+    pick(exampleProps, ["content", "logo", "intro", "ctaLabel", "ctaUrl"])
   );
 }
 
-export function sample4_withCoverImage() {
-  return (
-    <Minimalist
-      {...pick(sampleProps, [
-        "content",
-        "logo",
-        "intro",
-        "ctaLabel",
-        "ctaUrl",
-        "coverImage",
-      ])}
-    />
+export function example4_withCoverImage() {
+  return preview(
+    pick(exampleProps, [
+      "content",
+      "logo",
+      "intro",
+      "ctaLabel",
+      "ctaUrl",
+      "coverImage",
+    ])
   );
 }
 
-export function sample5_withSignature() {
-  return (
-    <Minimalist
-      {...pick(sampleProps, [
-        "content",
-        "logo",
-        "intro",
-        "ctaLabel",
-        "ctaUrl",
-        "coverImage",
-        "signature",
-      ])}
-    />
+export function example5_withSignature() {
+  return preview(
+    pick(exampleProps, [
+      "content",
+      "logo",
+      "intro",
+      "ctaLabel",
+      "ctaUrl",
+      "coverImage",
+      "signature",
+    ])
   );
 }
 
-export function sample6_withFooter() {
-  return <Minimalist {...omit(sampleProps, ["options"])} />;
+export function example6_withFooter() {
+  return preview(omit(exampleProps, ["options"]));
 }
 
-export function sample7_withCustomCTA() {
-  return <Minimalist {...sampleProps} />;
+export function example7_withCustomCTA() {
+  return preview(exampleProps);
 }
 
-export function sample8_withMarkdown() {
+export function example8_withMarkdown() {
   const intro = "Hello, **John!**";
   const content =
     "Hello John,  \nWe’ve received your request to change your password. Use the link below to set up a new password for your account. This link is only usable once! If you need to, you can reinitiate the password process again here.";
-  return <Minimalist {...sampleProps} intro={intro} content={content} />;
+  return preview({ ...exampleProps, intro, content });
 }
 
-export function sample9_withPlaceholders() {
+export function example9_withPlaceholders() {
   const intro = "{subject}";
   const content =
     "Hello {recipient_name}, you have requested a password reset.";
-  return (
-    <Minimalist
-      {...sampleProps}
-      intro={intro}
-      content={content}
-      options={{
-        placeholders: { subject: "Password reset", recipient_name: "John" },
-      }}
-    />
-  );
+  const options = {
+    placeholders: { subject: "Password reset", recipient_name: "John" },
+  };
+  return preview({ ...exampleProps, intro, content, options });
 }
