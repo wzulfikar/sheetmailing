@@ -1,5 +1,5 @@
 import AccountCreated from "../AccountCreated";
 
-export function accountCreated() {
+export function scene2_accountCreated() {
   return <AccountCreated name="Amelita" />;
 }

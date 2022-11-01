@@ -1,7 +1,7 @@
 import NewSignIn from "../NewSignIn";
 import BulletedList from "../components/BulletedList";
 
-export function newSignIn() {
+export function scene1_newSignIn() {
   return (
     <NewSignIn
       headline="Security Alert: New Sign-In"

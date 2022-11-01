@@ -1,7 +1,7 @@
 import Reservation from "../Reservation";
 import BulletedList from "../components/BulletedList";
 
-export function reservationWithError() {
+export function scene4a_reservationWithError() {
   return (
     <Reservation
       headline="Reservation Canceled"
@@ -25,7 +25,7 @@ export function reservationWithError() {
   );
 }
 
-export function reservationConfirmed() {
+export function scene4b_reservationConfirmed() {
   return (
     <Reservation
       headline="Reservation Confirmed"
@@ -49,7 +49,7 @@ export function reservationConfirmed() {
   );
 }
 
-export function reservationChanged() {
+export function scene4c_reservationChanged() {
   return (
     <Reservation
       headline="Reservation Changed"

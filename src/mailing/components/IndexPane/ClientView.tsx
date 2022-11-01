@@ -16,7 +16,11 @@ const ClientView: React.FC<ClientViewProps> = ({
   previewText,
 }) => {
   return (
-    <div className="py-4 px-3 text-sm outline-none" tabIndex={1} role="listbox">
+    <div
+      className="py-4 px-3 text-sm outline-none text-white"
+      tabIndex={1}
+      role="listbox"
+    >
       <h2 className="font-bold text-2xl pt-4 pb-4 mx-3 border-b border-dotted border-gray-600">
         Emails
       </h2>

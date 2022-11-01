@@ -1,5 +1,4 @@
-import React from "react";
-import { buildSendMail, render } from "mailing-core";
+import { buildSendMail } from "mailing-core";
 import upperFirst from "lodash/upperFirst";
 import nodemailer from "nodemailer";
 

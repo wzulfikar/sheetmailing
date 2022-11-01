@@ -70,7 +70,7 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   }, [path]);
 
   return (
-    <div className="h-screen">
+    <div className="bg-black h-screen">
       <div
         className={cx(
           "left-pane absolute border-dotted border-r border-gray-600 w-full sm:w-[300px] sm:left-0 transition-all z-40 bg-black mt-[52px] sm:mt-0",

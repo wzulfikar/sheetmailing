@@ -34,7 +34,7 @@ const CompactView: React.FC<CompactViewProps> = ({
   let collapseLevel = 999;
   return (
     <div
-      className="py-4 px-3 font-bold text-sm outline-none"
+      className="py-4 px-3 font-bold text-sm outline-none text-white"
       tabIndex={1}
       role="tree"
     >

@@ -1,6 +1,6 @@
 import ResetPassword from "../ResetPassword";
 
-export function resetPassword() {
+export function scene3_resetPassword() {
   return (
     <ResetPassword
       name="Amelita"
