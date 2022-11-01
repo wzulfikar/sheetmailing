@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import type { TreeRoute } from "./hooks/usePreviewTree";
 import { HamburgerContext } from "../HamburgerContext";
@@ -19,9 +19,15 @@ const CompactView: React.FC<CompactViewProps> = ({
 }) => {
   const { setHamburgerOpen } = useContext(HamburgerContext);
 
+  useEffect(() => {
+    setCollapse(1, true); // Collapse "Examples" section
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleClick = useCallback(
     (i: number, collapsed: boolean) =>
       (_e: React.MouseEvent<HTMLDivElement>) => {
+        console.log("collapse:", i);
         setCollapse(i, !collapsed);
         navigate(i);
         if (typeof setHamburgerOpen == "function") {
