@@ -27,12 +27,6 @@ export const getTemplateComponent = async (template: string) => {
   return component
 }
 
-export const renderTemplate = async (template: string, props: object) => {
-  const component = await getTemplateComponent(template);
-  const { html } = render(React.createElement(component, props));
-  return html
-}
-
 type Options = {
   subject: string;
   template: string,
