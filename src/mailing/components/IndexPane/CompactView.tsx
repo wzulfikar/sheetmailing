@@ -20,14 +20,16 @@ const CompactView: React.FC<CompactViewProps> = ({
   const { setHamburgerOpen } = useContext(HamburgerContext);
 
   useEffect(() => {
-    setCollapse(1, true); // Collapse "Examples" section
+    // Collapse "Examples" section if selected item is not in "Examples"
+    if (!window.location.pathname.startsWith("/previews/Examples")) {
+      setCollapse(1, true); // 0 = "Emails", 1 = "Examples", 2 = "Minimalist"
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = useCallback(
     (i: number, collapsed: boolean) =>
       (_e: React.MouseEvent<HTMLDivElement>) => {
-        console.log("collapse:", i);
         setCollapse(i, !collapsed);
         navigate(i);
         if (typeof setHamburgerOpen == "function") {
