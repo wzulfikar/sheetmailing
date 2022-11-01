@@ -67,7 +67,7 @@ const Minimalist = ({
             )}
             {content && (
               <MjmlText
-                padding="24px 0 0"
+                padding="0 0"
                 fontSize={textBase}
                 lineHeight={leadingRelaxed}
                 cssClass="paragraph"

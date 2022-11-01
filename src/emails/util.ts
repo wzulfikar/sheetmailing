@@ -9,7 +9,7 @@ export const exampleProps = {
   ctaUrl: "https://example.com",
   footer: "© {year} BookBook  ·  Unsubscribe",
   signature: "♥\nThe BookBook Team",
-  divider: true,
+  divider: false,
   // Pass the `options` props to override default options
   options: {
     cta: {
