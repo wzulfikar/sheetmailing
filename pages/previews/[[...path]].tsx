@@ -27,6 +27,9 @@ export const getStaticPaths = async () => {
     params: { path },
   }));
 
+  // Add /previews
+  paths.unshift({ params: { path: [] } });
+
   return {
     paths,
     fallback: false,
