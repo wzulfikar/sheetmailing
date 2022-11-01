@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import cx from "classnames";
+import { useRouter } from "next/router";
 
 import Header from "./Header";
 import HotIFrame from "./HotIFrame";
@@ -23,12 +24,33 @@ export type PreviewViewerProps = {
 };
 
 const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
+  const { query } = useRouter();
+  const { path } = query;
+
   const { previewFunction, previewClass } = usePreviewPath();
   const [viewMode, setViewMode] = useState<ViewMode>("desktop");
   const { hamburgerOpen } = useContext(HamburgerContext);
 
+  const [customPreview, setCustomPreview] = useState<Data["preview"] | null>(
+    null
+  );
+
   const data = initialData;
-  const { preview, previews } = data;
+  const { preview: initialPreview, previews } = data;
+
+  const preview = customPreview || initialPreview;
+
+  useEffect(() => {
+    if (!path?.[0] || !window.location.search) return;
+
+    fetch(`/api${window.location.pathname}${window.location.search}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          setCustomPreview(json.preview);
+        }
+      });
+  }, [path]);
 
   return (
     <div className="h-screen">

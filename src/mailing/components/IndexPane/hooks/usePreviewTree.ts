@@ -13,7 +13,7 @@ export type TreeRoute = {
 
 const safeReplaceState = debounce((router: NextRouter | null, path: string) => {
   try {
-    router?.replace(path, undefined, { shallow: true });
+    router?.replace(path);
   } catch (e) {
     // Debounce should be avoiding this error, but catch just in case:
     // SecurityError: Attempt to use history.replaceState() more than 100 times per 30 seconds
@@ -91,13 +91,16 @@ export function usePreviewTree(
   useEffect(() => {
     if (cursor !== -1 || !treeRoutes) return;
     const path = router.asPath;
-    const idx = treeRoutes.findIndex((route) => route.path === path);
+    const idx = treeRoutes.findIndex((route) => route.path === path.split('?').shift());
     if (idx >= 0) setCursor(idx);
   }, [router.asPath, cursor, treeRoutes]);
 
   useEffect(() => {
-    if (cursor === -1 || router?.asPath === routes[cursor]?.path) return;
-    safeReplaceState(router, routes[cursor]?.path);
+    const [path, params] = router?.asPath.split('?')
+    if (cursor === -1 || path === routes[cursor]?.path) return;
+
+    const withParams = params ? `${routes[cursor]?.path}?${params}` : routes[cursor]?.path
+    safeReplaceState(router, withParams);
   }, [cursor, router, routes]);
 
   /* Navigation callbacks */

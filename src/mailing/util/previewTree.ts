@@ -15,13 +15,14 @@ export async function previewTree() {
 
 export async function getPreviewComponent(
   name: string,
-  functionName: string
+  functionName: string,
+  templateProps?: object
 ): Promise<ReactElement<any, string | JSXElementConstructor<any>> | undefined> {
   const previews = await import("src/emails/previews");
   const previewModule:
     | {
-      [key: string]: () => ReactElement | undefined;
+      [key: string]: (templateProps?: object) => ReactElement | undefined;
     }
     | undefined = previews[name as keyof typeof previews] as any;
-  return previewModule?.[functionName]?.();
+  return previewModule?.[functionName]?.(templateProps);
 }

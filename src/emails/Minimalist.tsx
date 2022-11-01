@@ -62,14 +62,16 @@ const Minimalist = ({
                 {renderText(intro)}
               </MjmlText>
             )}
-            <MjmlText
-              padding="24px 0 0"
-              fontSize={textBase}
-              lineHeight={leadingRelaxed}
-              cssClass="paragraph"
-            >
-              {renderText(content)}
-            </MjmlText>
+            {content && (
+              <MjmlText
+                padding="24px 0 0"
+                fontSize={textBase}
+                lineHeight={leadingRelaxed}
+                cssClass="paragraph"
+              >
+                {renderText(content)}
+              </MjmlText>
+            )}
             <MjmlSpacer height="24px" />
             {ctaLabel && ctaUrl && (
               <ButtonPrimary
