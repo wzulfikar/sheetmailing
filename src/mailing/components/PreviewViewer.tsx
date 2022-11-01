@@ -43,7 +43,9 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   useEffect(() => {
     if (!path?.[0] || !window.location.search) return;
 
-    fetch(`/api${window.location.pathname}${window.location.search}`)
+    const isCustomPreview = path?.[1] == "custom_preview";
+    const params = isCustomPreview ? window.location.search : "";
+    fetch(`/api${window.location.pathname}${params}`)
       .then((res) => res.json())
       .then((json) => {
         if (json.success) {
