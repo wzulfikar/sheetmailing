@@ -44,8 +44,7 @@ export function example3_withIntro() {
 
 export function example4_withCTA() {
   return preview(
-    pick(exampleProps, ["content", "logo", "intro", "ctaLabel", "ctaUrl"]),
-    customProps
+    pick(exampleProps, ["content", "logo", "intro", "ctaLabel", "ctaUrl"])
   );
 }
 
