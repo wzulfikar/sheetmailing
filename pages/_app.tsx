@@ -8,7 +8,7 @@ export default function Mailing({ Component, pageProps }: AppProps) {
   return (
     <HamburgerProvider>
       <Head>
-        <title>MailingSheet</title>
+        <title>SheetMailing</title>
       </Head>
       <Component {...pageProps} />
     </HamburgerProvider>

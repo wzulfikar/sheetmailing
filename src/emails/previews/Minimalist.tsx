@@ -12,6 +12,7 @@ const exampleProps = {
   ctaUrl: "https://example.com",
   footer: "© {year} BookBook  ·  Unsubscribe",
   signature: "♥\nThe BookBook Team",
+  divider: true,
   // Pass the `options` props to override default options
   options: {
     cta: {
@@ -79,6 +80,10 @@ export function example5_withSignature(customProps) {
 }
 
 export function example6_withFooter(customProps) {
+  return preview(omit(exampleProps, ["options", "divider"]), customProps);
+}
+
+export function example6_withDivider(customProps) {
   return preview(omit(exampleProps, ["options"]), customProps);
 }
 

@@ -9,6 +9,7 @@ import { hotkeysMap } from "./hooks/usePreviewHotkeys";
 import IndexPane from "./IndexPane/IndexPane";
 import usePreviewPath from "./hooks/usePreviewPath";
 import { HamburgerContext } from "./HamburgerContext";
+import CircleLoader from "./CircleLoader";
 
 import MobileHeader from "./MobileHeader";
 import HTMLLint from "./HtmlLint";
@@ -30,6 +31,7 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const { previewFunction, previewClass } = usePreviewPath();
   const [viewMode, setViewMode] = useState<ViewMode>("desktop");
   const { hamburgerOpen } = useContext(HamburgerContext);
+  const [fetching, setFetching] = useState(false);
 
   const [customPreview, setCustomPreview] = useState<Data["preview"] | null>(
     null
@@ -46,6 +48,8 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
     const isCustomPreview = path?.[1] == "custom_preview";
     const extendPreview = _extend;
 
+    setFetching(true);
+
     const params =
       isCustomPreview || extendPreview ? window.location.search : "";
     fetch(`/api${window.location.pathname}${params}`)
@@ -54,7 +58,15 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
         if (json.success) {
           setCustomPreview(json.preview);
         }
+      })
+      .finally(() => {
+        setFetching(false);
       });
+
+    return () => {
+      setFetching(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
   return (
@@ -152,6 +164,11 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
         ) : (
           <div className="text-2xl grid h-screen place-items-center text-gray-600">
             No preview selected
+          </div>
+        )}
+        {fetching && (
+          <div className="loader-position">
+            <CircleLoader />
           </div>
         )}
       </div>

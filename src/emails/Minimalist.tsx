@@ -9,6 +9,7 @@ import {
   MjmlText,
   MjmlImage,
   MjmlSpacer,
+  MjmlDivider,
 } from "mjml-react";
 import ButtonPrimary from "./components/ButtonPrimary";
 import {
@@ -29,6 +30,7 @@ const Minimalist = ({
   ctaUrl,
   signature,
   footer,
+  divider,
   options,
 }: EmailPayload) => {
   const renderText = createTextRenderer(options?.placeholders);
@@ -38,6 +40,7 @@ const Minimalist = ({
       <Head />
       <MjmlBody width={600}>
         {logo && <Header loose logo={logo} />}
+        {divider && <Divider />}
         {coverImage && (
           <MjmlSection padding="0">
             <MjmlColumn>
@@ -95,10 +98,24 @@ const Minimalist = ({
             )}
           </MjmlColumn>
         </MjmlSection>
+        {divider && <Divider />}
         {footer && <Footer text={renderText(footer)} />}
       </MjmlBody>
     </Mjml>
   );
 };
+
+const Divider = () => (
+  <MjmlSection padding="0 24px" cssClass="smooth">
+    <MjmlColumn>
+      <MjmlDivider
+        borderColor="#666"
+        borderStyle="dotted"
+        borderWidth="1px"
+        padding="24px 0"
+      />
+    </MjmlColumn>
+  </MjmlSection>
+);
 
 export default Minimalist;
