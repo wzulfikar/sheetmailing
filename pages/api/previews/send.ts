@@ -12,13 +12,14 @@ export default async function showPreviewsIndex(
     res.end("Not found");
     return;
   }
+  const templateProps = req.query;
   const body: SendPreviewRequestBody = req.body;
 
   // Caller can provide html or preview references, html takes precedence.
   const { html, to, subject, previewClass, previewFunction, smtpInfo } = body;
   let component;
   if (!html && previewClass && previewFunction) {
-    component = await getPreviewComponent(previewClass, previewFunction);
+    component = await getPreviewComponent(previewClass, previewFunction, templateProps);
   }
 
   if (!html && !component) {

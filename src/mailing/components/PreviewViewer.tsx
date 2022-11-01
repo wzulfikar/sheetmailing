@@ -45,12 +45,10 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
     data.previewText = previewText;
   }
 
-  console.log("aa:", data.previewText);
-
   const preview = customPreview || initialPreview;
 
   useEffect(() => {
-    fetch("/api/previews/previewText")
+    fetch("/api/previews/previewText" + window.location.search)
       .then((res) => res.json())
       .then(({ previewText }) => setPreviewText(previewText));
   }, []);

@@ -64,11 +64,14 @@ const PreviewSender: React.FC<PreviewSenderProps> = ({
           subject: subject || `${previewClass} - ${previewFunction}`,
           smtpInfo: smtp,
         };
-        const response = await fetch("/api/previews/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+        const response = await fetch(
+          "/api/previews/send" + window.location.search,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
         const data: SendPreviewResponseBody = await response.json();
 
         if (data.error || response.status >= 300) {

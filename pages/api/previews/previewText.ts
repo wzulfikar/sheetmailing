@@ -21,11 +21,12 @@ const MAX_TEXT_CHARS = 140;
 
 async function getPreviewFunction(
   previewClass: string,
-  name: string
+  name: string,
+  templateProps?: object
 ): Promise<[string, string]> {
   let text = "";
   try {
-    const component = await getPreviewComponent(previewClass, name);
+    const component = await getPreviewComponent(previewClass, name, templateProps);
     if (!component) throw new Error(`${previewClass}#${name} not found`);
     const { html } = render(component);
     // slice out the body to minimize funky head parsing
@@ -46,12 +47,13 @@ async function getPreviewFunction(
 }
 
 export default async function showPreviewsIndex(
-  _req: NextApiRequest,
+  req: NextApiRequest,
   res: NextApiResponse<PreviewIndexResponseBody>
 ) {
+  const templateProps = req.query
   const previews = await previewTree();
   const previewsMap = await Promise.all(previews.map(async (previewGroup) =>
-    await Promise.all(previewGroup[1].map(async (pf) => await getPreviewFunction(previewGroup[0], pf)))
+    await Promise.all(previewGroup[1].map(async (pf) => await getPreviewFunction(previewGroup[0], pf, templateProps)))
   ))
   const previewText = Object.fromEntries(flatten(previewsMap));
   res.json({ previews, previewText });
