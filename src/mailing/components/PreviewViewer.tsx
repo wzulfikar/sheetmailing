@@ -32,6 +32,7 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const [viewMode, setViewMode] = useState<ViewMode>("desktop");
   const { hamburgerOpen } = useContext(HamburgerContext);
   const [fetching, setFetching] = useState(false);
+  const [previewText, setPreviewText] = useState(null);
 
   const [customPreview, setCustomPreview] = useState<Data["preview"] | null>(
     null
@@ -40,7 +41,19 @@ const PreviewViewer: React.FC<PreviewViewerProps> = ({ initialData }) => {
   const data = initialData;
   const { preview: initialPreview, previews } = data;
 
+  if (previewText) {
+    data.previewText = previewText;
+  }
+
+  console.log("aa:", data.previewText);
+
   const preview = customPreview || initialPreview;
+
+  useEffect(() => {
+    fetch("/api/previews/previewText")
+      .then((res) => res.json())
+      .then(({ previewText }) => setPreviewText(previewText));
+  }, []);
 
   useEffect(() => {
     if (!path?.[0] || !window.location.search) return;
