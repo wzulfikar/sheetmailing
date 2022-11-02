@@ -4,7 +4,7 @@ export const Schema = z.object({
   user: z.string(),
   password: z.string(),
   host: z.string(),
-  port: z.number().default(587)
+  port: z.string().transform(v => parseInt(v))
 })
 
 /**
@@ -14,10 +14,10 @@ export const Schema = z.object({
 export function parseSmtpInfo(str: string) {
   const splitHost = str.split('@')
   const hostInfo = splitHost.pop();
-  const userInfo = splitHost.join('');
+  const userInfo = splitHost.join('@');
 
   const [user, password] = userInfo.split(':')
-  const [host, port] = hostInfo?.split(':') || []
+  const [host, port = '587'] = hostInfo?.split(':') || []
 
   const smtp = { user, password, host, port };
   const schema = Schema.safeParse(smtp)
