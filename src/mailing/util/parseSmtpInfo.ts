@@ -14,7 +14,7 @@ export const Schema = z.object({
 export function parseSmtpInfo(str: string) {
   const splitHost = str.split('@')
   const hostInfo = splitHost.pop();
-  const userInfo = splitHost.join('');
+  const userInfo = splitHost.join('@');
 
   const [user, password] = userInfo.split(':')
   const [host, port] = hostInfo?.split(':') || []
